@@ -1,6 +1,5 @@
 """
-Description: A script to automate generation of Daily Hydrological Forecast
-             for Abra River Basin located in Northern Luzon Philippines.
+Description: A script to automate generation of Heat Index Infographics for Western Northern Luzon Philippines.
             
 AUTHOR: KAIZER MACNI
 
@@ -243,39 +242,4 @@ png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + 
 exporter = QgsLayoutExporter(layout)
 exporter.exportToImage(png_path, QgsLayoutExporter.ImageExportSettings())
 print("done")
-
-
-"""
-Caution
-fad64c 27-32
-
-if(rr_lagayan == "*"):     
-    lagayan_rain = n_rains    
-elif rr_lagayan == 0:
-    lagayan_rain = n_rains
-elif rr_lagayan < 61:
-    lagayan_rain = l_rains
-elif 26 < rr_lagayan < 33:
-    lagayan_rain = m_rains
-elif rr_lagayan > 180:
-    lagayan_rain = h_rains
-
-Extreme caution
-#ffba3f 33-41
-
-Danger
-ff8a38 42-51
-
-Extreme danger
-#ff444f > 52
-"""
-
-
-
-
-
-
-
-
-
 
