@@ -1,5 +1,5 @@
 """
-Description: A script to automate generation of Heat Index Infographics for Western Northern Luzon Philippines.
+Description: A script to automate generation of Heat Index Infographics
             
 AUTHOR: KAIZER MACNI
 
@@ -28,11 +28,19 @@ from qgis.PyQt.QtXml import QDomDocument
 
 
 from datetime import date
+from datetime import datetime
 
-curr_time = input("TIME: hh:mm AM/PM ")
+
+#curr_time = input("TIME: hh:mm AM/PM ")
 hi_laoag = input("Laoag HI: ")
 hi_batac = input("Batac HI: ")
 hi_sinait = input("Sinait HI: ")
+
+now = datetime.now()
+
+curr_time = now.strftime("%H:%M %p")
+
+
 
 
 # Create a QgsTextFormat object
@@ -77,6 +85,8 @@ project.read("/Users/kaizerjohnmacni/Downloads/hi/HI.qgz")
 
 
 today = date.today()
+
+
 #today = "2024-10-03"
 
 
@@ -232,14 +242,49 @@ else:
 
 #laoag_hi.setFontColor(QColor(255, 255, 0))
 
-time.setText(str(curr_time) + " -")
+time.setText(str(curr_time[0:3]) + "00" + " " + str(curr_time[-2:])  + " -")
 
 #base_path = os.path.join()
-png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " +  curr_time + ".png")
+png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " +   curr_time + ".png")
 
 
 
 exporter = QgsLayoutExporter(layout)
 exporter.exportToImage(png_path, QgsLayoutExporter.ImageExportSettings())
 print("done")
+
+
+"""
+Caution
+fad64c 27-32
+
+if(rr_lagayan == "*"):     
+    lagayan_rain = n_rains    
+elif rr_lagayan == 0:
+    lagayan_rain = n_rains
+elif rr_lagayan < 61:
+    lagayan_rain = l_rains
+elif 26 < rr_lagayan < 33:
+    lagayan_rain = m_rains
+elif rr_lagayan > 180:
+    lagayan_rain = h_rains
+
+Extreme caution
+#ffba3f 33-41
+
+Danger
+ff8a38 42-51
+
+Extreme danger
+#ff444f > 52
+"""
+
+
+
+
+
+
+
+
+
 
