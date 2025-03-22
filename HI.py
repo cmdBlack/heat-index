@@ -39,19 +39,8 @@ now = datetime.now()
 
 curr_time = now.strftime("%I:%M %p") 
 
-
-
-
 # Create a QgsTextFormat object
-text_format1 = QgsTextFormat()
-text_format2 = QgsTextFormat()
-text_format3 = QgsTextFormat()
-text_format4 = QgsTextFormat()
-text_format5 = QgsTextFormat()
-text_format6 = QgsTextFormat()
-text_format7 = QgsTextFormat()
-text_format8 = QgsTextFormat()
-
+text_format = QgsTextFormat()
 
 # Create a QFont object
 font = QFont()
@@ -77,24 +66,14 @@ project = QgsProject.instance()
 bridge = QgsLayerTreeMapCanvasBridge(project.layerTreeRoot(), canvas)
 project.read("/Users/kaizerjohnmacni/Downloads/hi/HI.qgz")
 
-
-
-
 today = date.today()
-
 
 project = QgsProject.instance()
             
 manager = project.layoutManager()
 layouts_list = manager.printLayouts()
-
-
-
-
 layout = QgsPrintLayout(project)
 layout.initializeDefaults()
-
-        
 document = QDomDocument()
 
 # read template content
@@ -124,116 +103,77 @@ laoag_hi.setText(hi_laoag + "ºC")
 batac_hi.setText(hi_batac + "ºC")
 sinait_hi.setText(hi_sinait + "ºC")
 
-#LAOAG
-# Set the font color (e.g., caution)
-text_format1.setColor(QColor(250, 214, 76))  # yellow color
-text_format1.setSize(38)
-text_format1.setFont(font)
 
-# Set the font color (e.g., extreme caution)
-text_format2.setColor(QColor(255, 186, 63))  # orange color
-text_format2.setSize(38)
-text_format2.setFont(font)
-
-# Set the font color (e.g., danger)
-text_format3.setColor(QColor(255, 138, 56))  # very orange color
-text_format3.setSize(38)
-text_format3.setFont(font)
-
-# Set the font color (e.g., extreme danger)
-text_format4.setColor(QColor(255, 68, 79))  # Red color
-text_format4.setSize(38)
-text_format4.setFont(font)
-
-#BATAC-SINAIT
-# Set the font color (e.g., caution)
-text_format5.setColor(QColor(250, 214, 76))  # yellow color
-text_format5.setSize(10)
-text_format5.setFont(font)
-
-# Set the font color (e.g., extreme caution)
-text_format6.setColor(QColor(255, 186, 63))  # orange color
-text_format6.setSize(10)
-text_format6.setFont(font)
-
-# Set the font color (e.g., danger)
-text_format7.setColor(QColor(255, 138, 56))  # very orange color
-text_format7.setSize(10)
-text_format7.setFont(font)
-
-# Set the font color (e.g., extreme danger)
-text_format8.setColor(QColor(255, 68, 79))  # Red color
-text_format8.setSize(10)
-text_format8.setFont(font)
-
-# Set the text format of the label item 1-4
-if 26 < int(hi_laoag) < 33:
-    laoag_hi.setTextFormat(text_format1)
-    laoag_desc.setText("CAUTION")
-    laoag_desc.setFontColor(QColor(250, 214, 76))
-elif 32 < int(hi_laoag) < 42:
-    laoag_hi.setTextFormat(text_format2)
-    laoag_desc.setText("EXTREME CAUTION")
-    laoag_desc.setFontColor(QColor(255, 186, 63))
-elif 41 < int(hi_laoag) < 52:
-    laoag_hi.setTextFormat(text_format3)
-    laoag_desc.setText("DANGER")
-    laoag_desc.setFontColor(QColor(255, 138, 56))
-elif int(hi_laoag) > 51:
-    laoag_hi.setTextFormat(text_format4)
-    laoag_desc.setText("EXTREME DANGER")
-    laoag_desc.setFontColor(QColor(255, 68, 79))
-else:
-    laoag_hi.setTextFormat(text_format1)
-    laoag_desc.setText("CAUTION")
-    laoag_desc.setFontColor(QColor(250, 214, 76))
-
-
-# Set the text format of the label item 5-8
-if 26 < int(hi_batac) < 33:
-    batac_hi.setTextFormat(text_format5)
-    batac_desc.setText("CAUTION")
-    batac_desc.setFontColor(QColor(250, 214, 76))
-elif 32 < int(hi_batac) < 42:
-    batac_hi.setTextFormat(text_format6)
-    batac_desc.setText("EXTREME CAUTION")
-    batac_desc.setFontColor(QColor(255, 186, 63))
-elif 41 < int(hi_batac) < 52:
-    batac_hi.setTextFormat(text_format7)
-    batac_desc.setText("DANGER")
-    batac_desc.setFontColor(QColor(255, 138, 56))
-elif int(hi_batac) > 51:
-    batac_hi.setTextFormat(text_format8)
-    batac_desc.setText("EXTREME DANGER")
-    batac_desc.setFontColor(QColor(255, 68, 79))
-else:
-    batac_hi.setTextFormat(text_format5)
-    batac_desc.setText("CAUTION")
-    batac_desc.setFontColor(QColor(250, 214, 76))
+def format_text(val, loc, desc=0):
+    #TODO
+    text_format.setFont(font)
+    if 26 < val < 33:
+        text_format.setColor(QColor(250, 214, 76))  # yellow color
+        if loc == "sinait":
+            sinait_desc.setText("CAUTION")
+        elif loc == "batac":
+            batac_desc.setText("CAUTION")
+        else:
+            laoag_desc.setText("CAUTION")
+    elif 32 < val < 42:
+        text_format.setColor(QColor(255, 186, 63))  # orange color
+        if loc == "sinait":
+            sinait_desc.setText("EXTREME CAUTION")
+        elif loc == "batac":
+            batac_desc.setText("EXTREME CAUTION")
+        else:
+            laoag_desc.setText("EXTREME CAUTION")
+    elif 41 < val < 52:
+        text_format.setColor(QColor(255, 138, 56))  # very orange color
+        if loc == "sinait":
+            sinait_desc.setText("DANGER")
+        elif loc == "batac":
+            batac_desc.setText("DANGER")
+        else:
+            laoag_desc.setText("DANGER")
+    elif val > 51:
+        text_format.setColor(QColor(255, 68, 79))  # Red color
+        if loc == "sinait":
+            sinait_desc.setText("EXTREME DANGER")
+        elif loc == "batac":
+            batac_desc.setText("EXTREME DANGER")
+        else:
+            laoag_desc.setText("EXTREME DANGER")
+    else:
+        text_format.setColor(QColor(250, 214, 76))  # yellow color
+        if loc == "sinait":
+            sinait_desc.setText("CAUTION")
+        elif loc == "batac":
+            batac_desc.setText("CAUTION")
+        else:
+            laoag_desc.setText("CAUTION")
+    if desc == 0:    
+        if loc == "laoag":
+            text_format.setSize(38)
+        else:
+            text_format.setSize(10)
+    else:
+        if loc == "laoag":
+            text_format.setSize(9.5)
+        else:
+            text_format.setSize(3.5)       
     
-if 26 < int(hi_sinait) < 33:
-    sinait_hi.setTextFormat(text_format5)
-    sinait_desc.setText("CAUTION")
-    sinait_desc.setFontColor(QColor(250, 214, 76))
-elif 32 < int(hi_sinait) < 42:
-    sinait_hi.setTextFormat(text_format6)
-    sinait_desc.setText("EXTREME CAUTION")
-    sinait_desc.setFontColor(QColor(255, 186, 63))
-elif 41 < int(hi_sinait) < 52:
-    sinait_hi.setTextFormat(text_format7)
-    sinait_desc.setText("DANGER")
-    sinait_desc.setFontColor(QColor(255, 138, 56))
-elif int(hi_sinait) > 51:
-    sinait_hi.setTextFormat(text_format8)
-    sinait_desc.setText("EXTREME DANGER")
-    sinait_desc.setFontColor(QColor(255, 68, 79))
-else:
-    sinait_hi.setTextFormat(text_format5)
-    sinait_desc.setText("CAUTION")
-    sinait_desc.setFontColor(QColor(250, 214, 76))
+ 
+format_text(int(hi_laoag), "laoag")
+laoag_hi.setTextFormat(text_format)
+format_text(int(hi_laoag), "laoag", 1)
+laoag_desc.setTextFormat(text_format)
 
+format_text(int(hi_batac), "batac")
+batac_hi.setTextFormat(text_format)
+format_text(int(hi_batac), "batac", 1)
+batac_desc.setTextFormat(text_format)
 
-#laoag_hi.setFontColor(QColor(255, 255, 0))
+format_text(int(hi_sinait), "sinait")
+sinait_hi.setTextFormat(text_format)
+format_text(int(hi_sinait), "sinait", 1)
+sinait_desc.setTextFormat(text_format)
+
 
 time.setText(curr_time[0:3] + "00" + " " + curr_time[-2:]  + " -")
 
@@ -243,13 +183,4 @@ png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + 
 exporter = QgsLayoutExporter(layout)
 exporter.exportToImage(png_path, QgsLayoutExporter.ImageExportSettings())
 print("done")
-
-
-
-
-
-
-
-
-
 
