@@ -27,18 +27,17 @@ from PyQt5.QtGui import QFont
 from qgis.PyQt.QtXml import QDomDocument
 
 
-from datetime import date
-from datetime import datetime
-
+from datetime import date, datetime
 
 #curr_time = input("TIME: hh:mm AM/PM ")
 hi_laoag = input("Laoag HI: ")
 hi_batac = input("Batac HI: ")
 hi_sinait = input("Sinait HI: ")
 
+
 now = datetime.now()
 
-curr_time = now.strftime("%H:%M %p")
+curr_time = now.strftime("%I:%M %p") 
 
 
 
@@ -58,9 +57,6 @@ text_format8 = QgsTextFormat()
 font = QFont()
 font.setFamily("Arial Black")  # Or any other font family you prefer
 font.setBold(True)        # Set font to bold (optional)
-
-
-
 
 
 ###########################################################
@@ -85,9 +81,6 @@ project.read("/Users/kaizerjohnmacni/Downloads/hi/HI.qgz")
 
 
 today = date.today()
-
-
-#today = "2024-10-03"
 
 
 project = QgsProject.instance()
@@ -127,9 +120,9 @@ batac_desc = layout.itemById("BATAC_DESC")
 sinait_desc = layout.itemById("SINAIT_DESC")
 time = layout.itemById("TIME")
 
-laoag_hi.setText(str(hi_laoag) + "ºC")
-batac_hi.setText(str(hi_batac) + "ºC")
-sinait_hi.setText(str(hi_sinait) + "ºC")
+laoag_hi.setText(hi_laoag + "ºC")
+batac_hi.setText(hi_batac + "ºC")
+sinait_hi.setText(hi_sinait + "ºC")
 
 #LAOAG
 # Set the font color (e.g., caution)
@@ -242,42 +235,14 @@ else:
 
 #laoag_hi.setFontColor(QColor(255, 255, 0))
 
-time.setText(str(curr_time[0:3]) + "00" + " " + str(curr_time[-2:])  + " -")
+time.setText(curr_time[0:3] + "00" + " " + curr_time[-2:]  + " -")
 
 #base_path = os.path.join()
-png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " +   curr_time + ".png")
-
-
+png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " + curr_time[0:2] +  " " + curr_time[-2:] + ".png")
 
 exporter = QgsLayoutExporter(layout)
 exporter.exportToImage(png_path, QgsLayoutExporter.ImageExportSettings())
 print("done")
-
-
-"""
-Caution
-fad64c 27-32
-
-if(rr_lagayan == "*"):     
-    lagayan_rain = n_rains    
-elif rr_lagayan == 0:
-    lagayan_rain = n_rains
-elif rr_lagayan < 61:
-    lagayan_rain = l_rains
-elif 26 < rr_lagayan < 33:
-    lagayan_rain = m_rains
-elif rr_lagayan > 180:
-    lagayan_rain = h_rains
-
-Extreme caution
-#ffba3f 33-41
-
-Danger
-ff8a38 42-51
-
-Extreme danger
-#ff444f > 52
-"""
 
 
 
