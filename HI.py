@@ -33,6 +33,7 @@ from datetime import date, datetime
 hi_laoag = input("Laoag HI: ")
 hi_batac = input("Batac HI: ")
 hi_sinait = input("Sinait HI: ")
+no_data = "NO DATA"
 
 
 now = datetime.now()
@@ -41,6 +42,7 @@ curr_time = now.strftime("%I:%M %p")
 
 # Create a QgsTextFormat object
 text_format = QgsTextFormat()
+text_format1 = QgsTextFormat()
 
 # Create a QFont object
 font = QFont()
@@ -64,7 +66,8 @@ canvas = QgsMapCanvas()
 
 project = QgsProject.instance()
 bridge = QgsLayerTreeMapCanvasBridge(project.layerTreeRoot(), canvas)
-project.read("/Users/kaizerjohnmacni/Downloads/hi/HI.qgz")
+#project.read("/Users/kaizerjohnmacni/Downloads/hi/HI.qgz")
+project.read("HI.qgz")
 
 today = date.today()
 
@@ -77,7 +80,8 @@ layout.initializeDefaults()
 document = QDomDocument()
 
 # read template content
-template_file = open("/Users/kaizerjohnmacni/Downloads/hi/HI-LAYOUT.qpt")
+#template_file = open("/Users/kaizerjohnmacni/Downloads/hi/HI-LAYOUT.qpt")
+template_file = open("HI-LAYOUT.qpt")
 
 
 template_content = template_file.read()
@@ -99,9 +103,9 @@ batac_desc = layout.itemById("BATAC_DESC")
 sinait_desc = layout.itemById("SINAIT_DESC")
 time = layout.itemById("TIME")
 
-laoag_hi.setText(hi_laoag + "ºC")
-batac_hi.setText(hi_batac + "ºC")
-sinait_hi.setText(hi_sinait + "ºC")
+laoag_hi.setText(hi_laoag + "ºC") if hi_laoag != no_data else laoag_hi.setText("NO DATA")
+batac_hi.setText(hi_batac + "ºC") if hi_batac != no_data else batac_hi.setText("NO DATA")
+sinait_hi.setText(hi_sinait + "ºC") if hi_sinait != no_data else sinait_hi.setText("NO DATA")
 
 
 def format_text(val, loc, desc=0):
@@ -158,27 +162,45 @@ def format_text(val, loc, desc=0):
         else:
             text_format.setSize(3.5)       
     
- 
-format_text(int(hi_laoag), "laoag")
-laoag_hi.setTextFormat(text_format)
-format_text(int(hi_laoag), "laoag", 1)
-laoag_desc.setTextFormat(text_format)
+if hi_laoag != no_data:
+    format_text(int(hi_laoag), "laoag")
+    laoag_hi.setTextFormat(text_format)
+    format_text(int(hi_laoag), "laoag", 1)
+    laoag_desc.setTextFormat(text_format)
+else:
+    text_format1.setSize(20)
+    text_format1.setColor(QColor(255, 255, 255))  #
+    laoag_hi.setTextFormat(text_format1)
+    laoag_desc.setText("")
+    
+if hi_batac != no_data:
+    format_text(int(hi_batac), "batac")
+    batac_hi.setTextFormat(text_format)
+    format_text(int(hi_batac), "batac", 1)
+    batac_desc.setTextFormat(text_format)
+else:
+    text_format1.setSize(5)
+    text_format1.setColor(QColor(255, 255, 255))  #
+    batac_hi.setTextFormat(text_format1)
+    batac_desc.setText("")
 
-format_text(int(hi_batac), "batac")
-batac_hi.setTextFormat(text_format)
-format_text(int(hi_batac), "batac", 1)
-batac_desc.setTextFormat(text_format)
-
-format_text(int(hi_sinait), "sinait")
-sinait_hi.setTextFormat(text_format)
-format_text(int(hi_sinait), "sinait", 1)
-sinait_desc.setTextFormat(text_format)
+if hi_sinait != no_data:
+    format_text(int(hi_sinait), "sinait")
+    sinait_hi.setTextFormat(text_format)
+    format_text(int(hi_sinait), "sinait", 1)
+    sinait_desc.setTextFormat(text_format)
+else:
+    text_format1.setSize(5)
+    text_format1.setColor(QColor(255, 255, 255))  #
+    sinait_hi.setTextFormat(text_format1)
+    sinait_desc.setText("")
 
 
 time.setText(curr_time[0:3] + "00" + " " + curr_time[-2:]  + " -")
 
 #base_path = os.path.join()
-png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " + curr_time[0:2] +  " " + curr_time[-2:] + ".png")
+#png_path = os.path.join("/Users/kaizerjohnmacni/Downloads/hi/png", str(today) + " " + curr_time[0:2] +  " " + curr_time[-2:] + ".png")
+png_path = os.path.join("png/", str(today) + " " + curr_time[0:2] +  " " + curr_time[-2:] + ".png")
 
 exporter = QgsLayoutExporter(layout)
 exporter.exportToImage(png_path, QgsLayoutExporter.ImageExportSettings())
