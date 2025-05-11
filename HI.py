@@ -7,7 +7,8 @@ AUTHOR: KAIZER MACNI
 
 
 import os
-
+os.environ["PROJ_LIB"]="/Applications/QGIS-LTR.app/Contents/Resources/proj"
+#/Applications/QGIS-LTR.app/Contents/Resources/proj
 from qgis.core import *
 from PyQt5.QtWidgets import QApplication
 from qgis.gui import QgsMapCanvas, QgsLayerTreeMapCanvasBridge
